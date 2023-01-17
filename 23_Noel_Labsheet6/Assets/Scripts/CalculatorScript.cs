@@ -10,38 +10,28 @@ public class CalculatorScript : MonoBehaviour
 
     public Toggle USDToggle;
     public Toggle JPYToggle;
+    public Toggle RinggitToggle;
+    public Toggle TaiwanToggle;
 
     public Text DebugText;
 
     private const float USD_SGD = 0.76f;
     private const float JPY_SGD = 97.02f;
-    
+    private const float MYR_SGD = 3.27f;
+    private const float TWD_SGD = 22.96f;
+
     private float InputValue;
     private float ConvertedValue;
+
+    private bool toggleUpdating = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        USDToggle.isOn = false;
+        USDToggle.isOn = true;
         JPYToggle.isOn = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (USDToggle.isOn)
-        {
-            JPYToggle.enabled = false;
-        }
-        else if (JPYToggle.isOn)
-        {
-            USDToggle.enabled = false;
-        }
-        else
-        {
-            USDToggle.enabled = true;
-            JPYToggle.enabled = true;
-        }
+        RinggitToggle.isOn = false;
+        TaiwanToggle.isOn = false;
     }
 
     public void ConvertBtn()
@@ -53,15 +43,22 @@ public class CalculatorScript : MonoBehaviour
             if (USDToggle.isOn == true)
             {
                 ConvertedValue = InputValue * USD_SGD;
-                JPYToggle.isOn = false;
                 ValueInputField.text = "" + ConvertedValue + " USD";
             }
-
-            if (JPYToggle.isOn == true)
+            else if (JPYToggle.isOn == true)
             {
                 ConvertedValue = InputValue * JPY_SGD;
-                USDToggle.isOn = false;
                 ValueInputField.text = "" + ConvertedValue + " JPY";
+            }
+            else if (RinggitToggle.isOn == true)
+            {
+                ConvertedValue = InputValue * MYR_SGD;
+                ValueInputField.text = "" + ConvertedValue + " MYR";
+            }
+            else if (TaiwanToggle.isOn == true)
+            {
+                ConvertedValue = InputValue * TWD_SGD;
+                ValueInputField.text = "" + ConvertedValue + " TWD";
             }
         }
         catch
@@ -74,8 +71,29 @@ public class CalculatorScript : MonoBehaviour
     {
         AmountInputField.text = "";
         ValueInputField.text = "";
+        USDToggle.isOn = true;
+        JPYToggle.isOn = false;
+        RinggitToggle.isOn = false;
+        TaiwanToggle.isOn = false;
+        DebugText.text = "Debugging";
+    }
+
+    public void toggleUpdate(GameObject thisToggle)
+    {
+        if (toggleUpdating == true)
+        {
+            return;
+        }
+
+        toggleUpdating = true;
+
         USDToggle.isOn = false;
         JPYToggle.isOn = false;
-        DebugText.text = "Debugging";
+        RinggitToggle.isOn = false;
+        TaiwanToggle.isOn = false;
+
+        thisToggle.GetComponent<Toggle>().isOn = true;
+
+        toggleUpdating = false;
     }
 }
