@@ -19,15 +19,31 @@ public class CalculatorScript : MonoBehaviour
     private float InputValue;
     private float ConvertedValue;
 
+    //----------------
+    //Lizhengyuan code
+    [SerializeField] private Toggle RMBToggle;
+    [SerializeField] private Toggle WONToggle;
+
+    private const float RMB_SGD = 5.11f;
+    private const float WON_SGD = 938.16f;
+
+    //---------------------
+
     // Start is called before the first frame update
     void Start()
     {
         USDToggle.isOn = false;
         JPYToggle.isOn = false;
-    }
+        //----------------
+        //Lizhengyuan code
+        RMBToggle.isOn = false;
+        WONToggle.isOn = false;
 
-    // Update is called once per frame
-    void Update()
+        //---------------------
+}
+
+// Update is called once per frame
+void Update()
     {
         if (USDToggle.isOn)
         {
@@ -42,6 +58,26 @@ public class CalculatorScript : MonoBehaviour
             USDToggle.enabled = true;
             JPYToggle.enabled = true;
         }
+        //-----------------------------
+        //Lizhengyuan code 
+        if (RMBToggle.isOn)
+        {
+            WONToggle.enabled = false;
+        }
+        else
+        {
+            WONToggle.enabled = true;
+        }
+
+        if (WONToggle.isOn)
+        {
+            RMBToggle.enabled = false;
+        }
+        else
+        {
+            RMBToggle.enabled = true;
+        }
+        //-----------------------------
     }
 
     public void ConvertBtn()
@@ -63,6 +99,22 @@ public class CalculatorScript : MonoBehaviour
                 USDToggle.isOn = false;
                 ValueInputField.text = "" + ConvertedValue + " JPY";
             }
+            //---------------------
+            //Lizhengyuan code
+            if(RMBToggle.isOn == true)
+            {
+                ConvertedValue = InputValue * RMB_SGD;
+                RMBToggle.isOn = false;
+                ValueInputField.text = ConvertedValue + " RMB";
+            }
+            if(WONToggle.isOn == true)
+            {
+                ConvertedValue = InputValue * WON_SGD;
+                WONToggle.isOn = false;
+                ValueInputField.text = ConvertedValue + " WON";
+            }
+
+            //---------------------
         }
         catch
         {
@@ -77,5 +129,14 @@ public class CalculatorScript : MonoBehaviour
         USDToggle.isOn = false;
         JPYToggle.isOn = false;
         DebugText.text = "Debugging";
+
+        //--------------------------
+        //Lizhengyuan code
+        RMBToggle.enabled = true;
+        RMBToggle.isOn = false;
+        WONToggle.enabled = true;
+        WONToggle.isOn = false;
+
+        //--------------------------
     }
 }
